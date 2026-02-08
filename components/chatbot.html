@@ -12,34 +12,34 @@
             const container = document.querySelector('.js-container');
             const root = ReactDOM.createRoot(container);
 
-            const chatMessages =[
-                {
-                    message: "hello chatbot",
-                    sender: "user",
-                    key: "id1"
-                },
-                {
-                    message: "How can I help you?",
-                    sender: "robot",
-                    key: "id2"
-                },
-                {
-                    message: "can you send me today's date?",
-                    sender: "user",
-                    key: "id3"
-                },
-                {
-                    message: "Today is September 27",
-                    sender: "robot",
-                    key: "id4"
-                },
-            ];
+            function CreateInput({chatMessages, setChatMessages}) {
+                const [inputText, setInputText] = React.useState('');
 
-            function CreateInput() {
+                function SaveInputText(event) {
+                    setInputText(event.target.value);
+                }
+
+                function sendMessage() {
+                    setChatMessages([
+                        ...chatMessages,
+                        {
+                        message: inputText,
+                        sender: "user",
+                        key: crypto.randomUUID()
+                        }
+                    ])
+                    setInputText('');
+                }
+
                 return (
                     <>
-                        <input placeholder="Send a message to chatbot" size="30" />
-                        <button>Send</button>
+                        <input 
+                            placeholder="Send a message to chatbot" 
+                            size="30" 
+                            onChange={SaveInputText}
+                            value={inputText}
+                        />
+                        <button onClick={sendMessage}>Send</button>
                     </>
                 )
             }
@@ -57,7 +57,7 @@
                 )
             }
 
-            function CreateMessages() {
+            function CreateMessages({chatMessages}) {
                 return (
                     <>
                         {chatMessages.map((chatMessage) => {
@@ -70,10 +70,33 @@
             }
 
             function App() {
+                const [chatMessages, setChatMessages] = React.useState([
+                    {
+                        message: "hello chatbot",
+                        sender: "user",
+                        key: "id1"
+                    },
+                    {
+                        message: "How can I help you?",
+                        sender: "robot",
+                        key: "id2"
+                    },
+                    {
+                        message: "can you send me today's date?",
+                        sender: "user",
+                        key: "id3"
+                    },
+                    {
+                        message: "Today is September 27",
+                        sender: "robot",
+                        key: "id4"
+                    },
+                ]);
+
                 return (
                     <>
-                        <CreateInput />
-                        <CreateMessages />
+                        <CreateInput chatMessages={chatMessages} setChatMessages={setChatMessages} />
+                        <CreateMessages chatMessages={chatMessages} />
                     </>
                 )
             }
