@@ -8,6 +8,7 @@
         <script src="https://unpkg.com/supersimpledev/react.js"></script>
         <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
         <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+        <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
         <script type="text/babel">
             const container = document.querySelector('.js-container');
             const root = ReactDOM.createRoot(container);
@@ -20,11 +21,23 @@
                 }
 
                 function sendMessage() {
-                    setChatMessages([
+                    const newChatMessages = [
                         ...chatMessages,
                         {
                         message: inputText,
                         sender: "user",
+                        key: crypto.randomUUID()
+                        }
+                    ]
+                    setChatMessages(newChatMessages);
+
+                    const response = Chatbot.getResponse(inputText);
+
+                    setChatMessages([
+                        ...newChatMessages,
+                        {
+                        message: response,
+                        sender: "robot",
                         key: crypto.randomUUID()
                         }
                     ])
