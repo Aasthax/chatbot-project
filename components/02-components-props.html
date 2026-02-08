@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lesson 2</title>
+    </head>
+    <body>
+        <div class="js-container"></div>
+        <script src="https://unpkg.com/supersimpledev/react.js"></script>
+        <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+        <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+        <script type="text/babel">
+            const container = document.querySelector('.js-container');
+            const root = ReactDOM.createRoot(container);
+
+            function ProductDetails(prop) {
+                const {image, name, price, discountedPrice} = prop;
+                return (
+                    <div>
+                        <img src={`../assets/${image}`} width="100px"></img>
+                        <p>{name}</p>
+                        {discountedPrice ? <del>Price: ${price}</del> : <p>Price: ${price}</p>}
+                        {discountedPrice && <p>Discounted Price: ${discountedPrice}</p>}
+                        <button>Add to cart</button>
+                    </div>
+                );
+            }
+            
+            function App() {
+                return (
+                    <>
+                        <ProductDetails
+                            image="cotton-socks.png"
+                            name="Cotton socks"
+                            price="10.90"
+                            discountedPrice="5.45"
+                        />
+                        <ProductDetails
+                            image="tennis-balls.png"
+                            name="Tennis Ball"
+                            price="20.45"
+                        />
+                        <ProductDetails
+                            image="plain-t-shirt.png"
+                            name="Plain T-Shirt"
+                            price="25.90"
+                            discountedPrice="20.45"
+                        />
+                     </>
+                )
+            }
+            root.render(<App />)
+
+        </script>
+    </body>
+</html>
