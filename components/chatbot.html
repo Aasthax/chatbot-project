@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Chatbot</title>
+        <link rel="stylesheet" href="../styles/chatbot.css">
     </head>
     <body>
         <div class="js-container"></div>
@@ -45,35 +46,36 @@
                 }
 
                 return (
-                    <>
+                    <div className="input-container">
                         <input 
+                            className="search-bar"
                             placeholder="Send a message to chatbot" 
                             size="30" 
                             onChange={SaveInputText}
                             value={inputText}
                         />
-                        <button onClick={sendMessage}>Send</button>
-                    </>
+                        <button className="send-button" onClick={sendMessage}>Send</button>
+                    </div>
                 )
             }
 
             function CreateMessage(props) {
                 const {message, sender} = props;
                 return (
-                    <>
-                        <div>
-                            {sender==='robot'? <img src={`../assets/${sender}.png`} width="30px" /> : ''}
+                    <div className={`chat-message-container-${sender}`}>
+                        {sender==='robot'? <img className="chat-profile" src={`../assets/${sender}.png`} width="30px" /> : ''}
+                        <div className="chat-message">
                             {message}
-                            {sender==='user'? <img src={`../assets/${sender}.png`} width="30px" />: ''}
                         </div>
-                    </>
+                        {sender==='user'? <img className="chat-profile" src={`../assets/${sender}.png`} width="30px" />: ''}
+                    </div>
                 )
             }
 
             function CreateMessages({chatMessages}) {
                 return (
                     <>
-                        {chatMessages.map((chatMessage) => {
+                        {[...chatMessages].reverse().map((chatMessage) => {
                             return (
                                 <CreateMessage message={chatMessage.message} sender={chatMessage.sender} key={chatMessage.key} />
                             )
@@ -83,34 +85,15 @@
             }
 
             function App() {
-                const [chatMessages, setChatMessages] = React.useState([
-                    {
-                        message: "hello chatbot",
-                        sender: "user",
-                        key: "id1"
-                    },
-                    {
-                        message: "How can I help you?",
-                        sender: "robot",
-                        key: "id2"
-                    },
-                    {
-                        message: "can you send me today's date?",
-                        sender: "user",
-                        key: "id3"
-                    },
-                    {
-                        message: "Today is September 27",
-                        sender: "robot",
-                        key: "id4"
-                    },
-                ]);
+                const [chatMessages, setChatMessages] = React.useState([]);
 
                 return (
-                    <>
+                    <div className="main-body">
+                        <div className="messages-container">
+                            <CreateMessages chatMessages={chatMessages} />
+                        </div>
                         <CreateInput chatMessages={chatMessages} setChatMessages={setChatMessages} />
-                        <CreateMessages chatMessages={chatMessages} />
-                    </>
+                    </div>
                 )
             }
 
